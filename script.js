@@ -21,6 +21,74 @@ const numTentativas = 7;
 /* Valor para opacidade dos olhos */
 const opacidadeOlhos = 0.3;
 
+const categorias = {
+    frutas: ['banana', 'maça', 'laranja', 'mamão', 'uva', 'melancia', 'melao'],
+    profissoes: ['engenheiro', 'advogado', 'medico', 'professor', 'pescador', 'programador'],
+    animais: ['papagaio', 'galo', 'cachorro', 'gato', 'galinha', 'cavalo'],
+    cores: ['amarelo', 'azul', 'laranja', 'roxo', 'vermelho', 'marrom']
+}
+
+function retornaArrayCategorias(){
+    return Object.keys(categorias);
+}
+
+function retornaCategoria(){
+    const arrayCategorias = retornaArrayCategorias();
+    let indiceCategoria = Math.floor(Math.random() * arrayCategorias.length);
+    return arrayCategorias[indiceCategoria]
+}
+
+function exibeCategoria(){
+    categoria.innerHTML = retornaCategoria()
+}
+
+function retornaNumAleatorio(max){
+    return Math.floor(Math.random() * max)
+}
+
+function definePalavraProposta(){
+    const arrayPalavras = categorias[categoria.innerHTML];
+    let indicePalavra = retornaNumAleatorio(arrayPalavras.length);
+    palavraProposta = arrayPalavras[indicePalavra];
+    console.log(palavraProposta);
+    ocultaPalavra();
+}
+
+function ocultaPalavra(){
+    let palavraOcultada = "";
+    for(let i = 0; i < palavraProposta.length; i++){
+        palavraOcultada += "-";
+    }
+    exibePalavraInterface(palavraOcultada)
+}
+
+function exibePalavraInterface(palavra){
+    palavraInterface.innerHTML = palavra;
+}
+
+function tentativa(letra){
+
+    if(palavraProposta.includes(letra)){
+        atualizaPalavraInterface(letra)
+    }else{
+
+    }
+}
+
+function atualizaPalavraInterface(letra){
+    let palavraAux = "";
+    for(let i = 0; i < palavraProposta.length; i++){
+        if(palavraProposta[i] === letra){
+            palavraAux += letra;
+        }else if (palavraInterface.innerHTML[i] != "-") {
+            palavraAux += palavraInterface.innerHTML[i];
+        }else {
+            palavraAux += "-"
+        }
+    }
+    exibePalavraInterface(palavraAux)
+
+}
 
 /*
 Recebe o evento do teclado e passa apenas o valor da letra para a função tentativa
@@ -65,6 +133,9 @@ Inicia as configurações do jogo
 function iniciaJogo(){
     indiceBoneco = 0;
     letrasErradasArray = [];
+    ocultaBoneco();
+    exibeCategoria();
+    definePalavraProposta();
     letrasErradas.innerHTML = "Letras erradas: ";
     window.addEventListener("keypress", retornaLetra);
 }
